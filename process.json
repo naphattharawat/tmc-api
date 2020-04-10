@@ -1,0 +1,11 @@
+{
+  "apps": [
+    {
+      "name": "eoc-api",
+      "script": "./dist/bin/www.js",
+      "wait_ready": true,
+      "instances" : "10",
+      "exec_mode" : "cluster"
+    }
+  ]
+}
