@@ -12,7 +12,7 @@ export class Jwt {
 
   signApiKey(playload: any) {
     let token = jwt.sign(playload, this.secretKey, {
-      expiresIn: '1y'
+      expiresIn: '1d'
     });
     return token;
   }

@@ -8,13 +8,14 @@ import * as crypto from 'crypto';
 import { Login } from '../models/login';
 
 import { Jwt } from '../models/jwt';
+import moment = require('moment');
 
 const loginModel = new Login();
 const jwt = new Jwt();
 
 const router: Router = Router();
 
-router.post('/customer', async (req: Request, res: Response) => {
+router.post('/', async (req: Request, res: Response, ) => {
   let username: string = req.body.username;
   let password: string = req.body.password;
 
@@ -27,11 +28,23 @@ router.post('/customer', async (req: Request, res: Response) => {
     if (rs.length) {
 
       let payload = {
-        fullname: `${rs[0].first_name} ${rs[0].last_name}`,
-        id: rs[0].user_id,
+        vender_name: `${rs[0].vender_name}`,
+        id: rs[0].id,
+
       }
 
-      let token = jwt.sign(payload);
+      let token = jwt.signApiKey(payload);
+      // let checkAvtives = await loginModel.checkAvtives(db, dataLogs)
+      if (token) {
+        let dataLogs = {
+          token: token,
+          actived: moment().format('YYYY-MM-DD HH:m:s'),
+          expired: moment().add('d',1).format('YYYY-MM-DD HH:m:s'),
+          use_id: rs[0].id
+        }
+        await loginModel.logs_token(db, dataLogs)
+      }
+      await loginModel.updateLastActive(db, rs[0].id, {last_actived: moment().format('YYYY-MM-DD HH:m:s')})
       res.send({ ok: true, token: token, code: HttpStatus.OK });
     } else {
       res.send({ ok: false, error: 'Login failed!', code: HttpStatus.UNAUTHORIZED });

@@ -2,9 +2,13 @@ import * as Knex from 'knex';
 
 export class RequestModel {
 
-  saveRequest(db: Knex, data: any) {
-    return db('requests')
-      .insert(data);
+  getFilerData(db: Knex) {
+    return db('filter_data')
+  }
+
+  getFilerDataCode(db: Knex, code) {
+    return db('filter_data')
+      .where('HOS_CODE', code)
   }
 
 }

@@ -2,9 +2,26 @@ import * as Knex from 'knex';
 
 export class Login {
   login(db: Knex, username: string, password: string) {
-    return db('users')
+    return db('um_users')
       .where('username', username)
       .where('password', password)
       .limit(1);
+  }
+
+  logs_token(db: Knex, data: any) {
+    return db('logs_token')
+      .insert(data)
+  }
+
+  updateLastActive(db, id, date: {}) {
+    return db('um_users')
+      .update(date)
+      .where('id', id)
+  }
+
+  checkActive(db, useId = 0 ,token= '') {
+    return db('view_actived_token')
+    .where('use_id', useId)
+    .where('token',token)
   }
 }
