@@ -8,4 +8,4 @@ dist/*
 app/*
 .DS_Store
 .idea
-.env
+eoc-config

@@ -17,7 +17,7 @@ router.get('/', (req: Request, res: Response) => {
 
 });
 
-router.get('/all', async (req: Request, res: Response) => {
+router.get('/', async (req: Request, res: Response) => {
   try {
     const db = req.dbEoc
     const rs: any = await requestModel.getFilerData(db);
@@ -27,7 +27,7 @@ router.get('/all', async (req: Request, res: Response) => {
   }
 });
 
-router.get('/hosp/:hospcode', async (req: Request, res: Response) => {
+router.get('/hospcode/:hospcode', async (req: Request, res: Response) => {
   const hospcode = req.params.hospcode;
   try {
     const db = req.dbEoc

@@ -1,8 +1,9 @@
 /// <reference path="../typings.d.ts" />
-
-require('dotenv').config();
-
 import * as path from 'path';
+
+let envPath = path.join(__dirname, '../eoc-config');
+require('dotenv').config({ path: envPath });
+
 import * as logger from 'morgan';
 import * as cookieParser from 'cookie-parser';
 import * as bodyParser from 'body-parser';
