@@ -165,7 +165,7 @@ app.use(responseSize(async (req, res, size) => {
       path: req.baseUrl +req.path,
       app_id: req.headers['user-agent'],
       client_ip: req.headers['x-forwarded-for'] || req.connection.remoteAddress,
-      provider_uid: req.decoded.id,
+      provider_uid: req.decoded ? req.decoded.id : '0',
       response_size: outputSize,
       request_size: req.socket.bytesRead
     }

@@ -11,11 +11,6 @@ import { RequestModel } from '../models/request';
 const requestModel = new RequestModel();
 const router: Router = Router();
 
-router.get('/', (req: Request, res: Response) => {
-
-  res.send({ ok: true, message: 'Welcome to Api Server!', code: HttpStatus.OK });
-
-});
 
 router.get('/', async (req: Request, res: Response) => {
   try {
