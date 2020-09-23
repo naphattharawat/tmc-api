@@ -34,6 +34,8 @@ router.get('/', async (req: Request, res: Response) => {
     }
    
   } catch (error) {
+    console.log(error);
+    
     res.send({ ok: false, code:HttpStatus.INTERNAL_SERVER_ERROR,error: error.message });
   }
 });
