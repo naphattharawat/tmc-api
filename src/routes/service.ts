@@ -27,7 +27,7 @@ router.get('/', async (req: Request, res: Response) => {
       const obj = {
         prefix:json.prefix,
         firstName: json.name,
-        lastName: json.sur_name,
+        lastName: json.sure_name,
         license:json.license
       }
       res.send(
