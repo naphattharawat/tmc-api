@@ -2,7 +2,7 @@ import * as Knex from 'knex';
 
 export class Login {
   login(db: Knex, username: string, password: string) {
-    const appId= process.env.APP_ID;
+    const appId = process.env.APP_ID;
     return db('um_users')
       .where('username', username)
       .where('password', password)
