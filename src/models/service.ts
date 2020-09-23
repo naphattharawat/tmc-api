@@ -8,7 +8,7 @@ export class ServiceModel {
     const api_tmc_url = process.env.API_TMC_URL;
     firstName='อนันต์';
     lastName='กนกศิลป์';
-    let url = `${api_tmc_url}/${key}/?p=${firstName}!${lastName}`;
+    let url = `${api_tmc_url}/${key}/`;
     if (code) {
       url += `/${code}`;
     }
@@ -17,6 +17,7 @@ export class ServiceModel {
       var options = {
         'method': 'GET',
         'url': url,
+        'qs': {p: `${firstName}!${lastName}`},
       };
       request(options, function (error, response, body) {
         if (error) {
