@@ -21,13 +21,13 @@ router.get('/', async (req: Request, res: Response) => {
     if (firstName && lastName) {
       const rs: any = await serviceModel.verifyTMC(firstName, lastName, code);
       const json = JSON.parse(rs.toString());
-      
+      console.log(json);
       const statusMessage = messageName(json.sta);
       const statusCodeMessage = messageName(json.staCode);
       const obj = {
         prefix:json.prefix,
         firstName: json.name,
-        lastName: json.surname,
+        lastName: json.sur_name,
         license:json.license
       }
       res.send(
