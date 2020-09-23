@@ -7,14 +7,16 @@ export class ServiceModel {
     const key = process.env.API_TMC_KEY;
     const api_tmc_url = process.env.API_TMC_URL;
     let url = `${api_tmc_url}/${key}/`;
+    
+    let p = `${firstName}!${lastName}`;
     if (code) {
-      url += `/${code}`;
+      p += `!${code}`;
     }
     return new Promise((resolve: any, reject: any) => {
       var options = {
         'method': 'GET',
         'url': url,
-        'qs': {p: `${firstName}!${lastName}`},
+        'qs': {p: p},
       };
       request(options, function (error, response, body) {
         if (error) {
