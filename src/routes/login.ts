@@ -20,21 +20,17 @@ router.post('/', async (req: Request, res: Response, ) => {
   let password: string = req.body.password;
 
   let db = req.db;
-
   try {
     let encPassword = crypto.createHash('md5').update(password).digest('hex');
     let rs: any = await loginModel.login(db, username, encPassword);
 
     if (rs.length) {
-
       let payload = {
         vender_name: `${rs[0].vender_name}`,
-        id: rs[0].id,
-
+        id: rs[0].id
       }
 
       let token = jwt.signApiKey(payload);
-      // let checkAvtives = await loginModel.checkAvtives(db, dataLogs)
       if (token) {
         let dataLogs = {
           token: token,
