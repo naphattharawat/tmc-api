@@ -20,7 +20,8 @@ router.get('/', async (req: Request, res: Response) => {
     const code: any = isNull(req.query.code) ? null : req.query.code; // optional
     if (firstName && lastName) {
       const rs: any = await serviceModel.verifyTMC(firstName,lastName,code);
-      res.send({ ok: true, code:HttpStatus.OK,rows: rs });
+      const json =  JSON.parse(rs.toString());
+      res.send({ ok: true, code:HttpStatus.OK,rows: json });
     } else {
       if (!lastName && !firstName) {
         res.send({ ok: false, code: HttpStatus.BAD_REQUEST, error: 'ไม่มีข้อมูลชื่อและนามสกุล' });
