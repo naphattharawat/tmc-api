@@ -10,7 +10,6 @@ export class ServiceModel {
     if (code) {
       url += `/${code}`;
     }
-    console.log(url);
     return new Promise((resolve: any, reject: any) => {
       var options = {
         'method': 'GET',

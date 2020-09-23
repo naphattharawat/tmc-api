@@ -9,7 +9,7 @@ const jwt = new Jwt();
 const router: Router = Router();
 
 router.get('/', (req: Request, res: Response) => {
-  res.send({ ok: true, message: 'Welcome to RESTful api server!', code: HttpStatus.OK });
+  res.send({ ok: true, message: 'Welcome to TMC api server! Version 1.0.0', code: HttpStatus.OK });
 });
 
 // router.get('/gen-token', async (req: Request, res: Response) => {
