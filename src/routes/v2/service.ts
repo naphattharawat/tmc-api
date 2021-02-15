@@ -17,28 +17,27 @@ router.get('/', async (req: Request, res: Response) => {
   try {
     const firstName: any = req.query.firstName;
     const lastName: any = req.query.lastName;
-    const code: any = isNull(req.query.code) ? null : req.query.code; // optional
+    const code: any = isNull(req.query.license) ? null : req.query.license; // optional
     if (firstName && lastName) {
       const rs: any = await serviceModel.verifyTMC(firstName, lastName, code);
       const json = JSON.parse(rs.toString());
       const statusMessage = messageName(json.sta);
       const statusCodeMessage = messageName(json.staCode);
       const obj = {
-        prefix:json.prefix,
-        firstName: json.name,
-        lastName: json.sure_name,
+        first_name: json.name,
+        last_name: json.sure_name,
         license:json.license
       }
       const response = {
         ok:true,
         code:HttpStatus.OK,
-        status_name : {
+        name : {
           status: json.sta,
-          statusMessage:statusMessage, 
+          status_message:statusMessage, 
         },
-        status_code : {
-          statusCode:json.staCode,
-          statusCodeMessage:statusCodeMessage, 
+        license : {
+          status:json.staCode,
+          status_message:statusCodeMessage, 
         },
         data: obj 
       }
