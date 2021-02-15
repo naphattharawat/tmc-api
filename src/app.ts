@@ -25,6 +25,8 @@ import loginRoute from './routes/login';
 import { Login } from './models/login';
 import { LogsModel } from './models/logs';
 import serviceRoute from './routes/service';
+import v2ServiceRoute from './routes/v2/service';
+import v1ServiceRoute from './routes/v1/service';
 
 // Assign router to the express.Router() instance
 const app: express.Application = express();
@@ -177,8 +179,10 @@ app.use(responseSize(async (req, res, size) => {
 }));
 // app.use(logResponseBody);
 app.use('/login', loginRoute);
-app.use('/api', api);
-api.use('/', checkAuth, serviceRoute);
+app.use('/api',checkAuth, api);
+api.use('/', serviceRoute);
+api.use('/v1', v1ServiceRoute);
+api.use('/v2', v2ServiceRoute);
 app.use('/', indexRoute);
 
 //error handlers
