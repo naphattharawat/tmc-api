@@ -27,13 +27,12 @@ import { LogsModel } from './models/logs';
 import serviceRoute from './routes/service';
 import v2ServiceRoute from './routes/v2/service';
 import v1ServiceRoute from './routes/v1/service';
-
 // Assign router to the express.Router() instance
 const app: express.Application = express();
 const api = express.Router()
 
 const jwt = new Jwt();
-const loginModal = new Login();
+const loginModel = new Login();
 const logsModel = new LogsModel();
 
 //view engine setup
@@ -140,6 +139,41 @@ let checkAuth = async (req: Request, res: Response, next: NextFunction) => {
   });
 }
 
+
+let checkAuthOauth = async (req: Request, res: Response, next: NextFunction) => {
+  let token: string = null;
+
+  if (req.headers.authorization && req.headers.authorization.split(' ')[0] === 'Bearer') {
+    token = req.headers.authorization.split(' ')[1];
+  } else if (req.query && req.query.token) {
+    token = req.query.token;
+  } else {
+    token = req.body.token;
+  }
+  try {
+
+    const rs: any = await loginModel.verify(token);
+    if (rs.ok) {
+      req.decoded = rs.rows;
+      next();
+    }
+    else {
+      return res.send({
+        ok: false,
+        error: HttpStatus.getStatusText(HttpStatus.UNAUTHORIZED),
+        code: HttpStatus.UNAUTHORIZED
+      });
+    }
+  } catch (error) {
+    return res.send({
+      ok: false,
+      error: HttpStatus.getStatusText(HttpStatus.UNAUTHORIZED),
+      code: HttpStatus.UNAUTHORIZED
+    });
+  }
+}
+
+
 async function saveLogApi(req: Request, res: Response, next) {
   try {
     let log = {
@@ -183,6 +217,7 @@ app.use('/api',checkAuth, api);
 api.use('/', serviceRoute);
 api.use('/v1', v1ServiceRoute);
 api.use('/v2', v2ServiceRoute);
+app.use('/api/v3 ',checkAuthOauth, v2ServiceRoute);
 app.use('/', indexRoute);
 
 //error handlers

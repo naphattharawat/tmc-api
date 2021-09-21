@@ -1,4 +1,5 @@
 import * as Knex from 'knex';
+const request = require("request");
 
 export class Login {
   login(db: Knex, username: string, password: string) {
@@ -25,5 +26,32 @@ export class Login {
     return db('view_actived_token')
     .where('use_id', useId)
     .where('token',token)
+  }
+
+  verify(token) {
+    return new Promise((resolve: any, reject: any) => {
+      var options = {
+        method: 'GET',
+        url: 'https://oauth.moph.go.th/v1/verify',
+        qs: { app_id: process.env.APP_ID },
+        headers:
+        {
+          'cache-control': 'no-cache',
+          'content-type': 'application/json',
+          'Authorization': `Bearer ${token}`
+
+        },
+        agentOptions: {
+          rejectUnauthorized: false
+        }
+      };
+      request(options, function (error, response, body) {
+        if (error) {
+          reject(error);
+        } else {
+          resolve(JSON.parse(body));
+        }
+      });
+    });
   }
 }
