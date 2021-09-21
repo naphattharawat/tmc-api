@@ -151,8 +151,8 @@ let checkAuthOauth = async (req: Request, res: Response, next: NextFunction) => 
     token = req.body.token;
   }
   try {
-
     const rs: any = await loginModel.verify(token);
+
     if (rs.ok) {
       req.decoded = rs.rows;
       next();
@@ -213,11 +213,11 @@ app.use(responseSize(async (req, res, size) => {
 }));
 // app.use(logResponseBody);
 app.use('/login', loginRoute);
+app.use('/api/v3',checkAuthOauth, v2ServiceRoute);
 app.use('/api',checkAuth, api);
-api.use('/', serviceRoute);
+// api.use('/', serviceRoute);
 api.use('/v1', v1ServiceRoute);
 api.use('/v2', v2ServiceRoute);
-app.use('/api/v3 ',checkAuthOauth, v2ServiceRoute);
 app.use('/', indexRoute);
 
 //error handlers

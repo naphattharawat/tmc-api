@@ -29,6 +29,8 @@ export class Login {
   }
 
   verify(token) {
+    console.log('1');
+    
     return new Promise((resolve: any, reject: any) => {
       var options = {
         method: 'GET',
