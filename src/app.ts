@@ -119,7 +119,7 @@ let checkAuth = async (req: Request, res: Response, next: NextFunction) => {
   
   jwt.verify(token)
   .then(async (decoded: any) => {
-    const _token = await loginModal.checkActive(req.db, decoded.id, token);
+    const _token = await loginModel.checkActive(req.db, decoded.id, token);
     if (_token.length) {
       req.decoded = decoded;
       next();
