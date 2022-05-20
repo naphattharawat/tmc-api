@@ -20,6 +20,8 @@ router.get('/', async (req: Request, res: Response) => {
     const code: any = isNull(req.query.license) ? null : req.query.license; // optional
     if (firstName && lastName) {
       const rs: any = await serviceModel.verifyTMC(firstName, lastName, code);
+      console.log(rs);
+      const json = JSON.parse(rs.toString());
       // {"active":true}
       // {"status":400,"error":"ER205","messages":{"error":"Not found MD"}}    
       const obj = {
@@ -27,7 +29,7 @@ router.get('/', async (req: Request, res: Response) => {
         last_name: lastName,
         license: code
       }
-      if (rs.active) {
+      if (json.active) {
         const response = {
           ok: true,
           code: HttpStatus.OK,
@@ -37,7 +39,7 @@ router.get('/', async (req: Request, res: Response) => {
       } else {
         const response = {
           ok: false,
-          code: HttpStatus.NOT_FOUND,
+          code: HttpStatus.BAD_REQUEST,
           data: obj
         }
         res.send(response);
