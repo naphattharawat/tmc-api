@@ -18,7 +18,7 @@ export class ServiceModel {
           Authorization: key,
           'Content-Type': 'application/x-www-form-urlencoded'
         },
-        form: { name: firstName, lastname: lastName }
+        form: obj
       };
       request(options, function (error, response, body) {
         if (error) {
