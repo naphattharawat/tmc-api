@@ -20,28 +20,28 @@ router.get('/', async (req: Request, res: Response) => {
     const code: any = isNull(req.query.license) ? null : req.query.license; // optional
     if (firstName && lastName) {
       const rs: any = await serviceModel.verifyTMC(firstName, lastName, code);
-      const json = JSON.parse(rs.toString());
-      const statusMessage = messageName(json.sta);
-      const statusCodeMessage = messageName(json.staCode);
+      // {"active":true}
+      // {"status":400,"error":"ER205","messages":{"error":"Not found MD"}}    
       const obj = {
-        first_name: json.name,
-        last_name: json.sure_name,
-        license:json.license
+        first_name: firstName,
+        last_name: lastName,
+        license: code
       }
-      const response = {
-        ok:true,
-        code:HttpStatus.OK,
-        name : {
-          status: json.sta,
-          status_message:statusMessage, 
-        },
-        license : {
-          status:json.staCode,
-          status_message:statusCodeMessage, 
-        },
-        data: obj 
+      if (rs.active) {
+        const response = {
+          ok: true,
+          code: HttpStatus.OK,
+          data: obj
+        }
+        res.send(response);
+      } else {
+        const response = {
+          ok: false,
+          code: HttpStatus.NOT_FOUND,
+          data: obj
+        }
+        res.send(response);
       }
-      res.send(response);
     } else {
       if (!lastName && !firstName) {
         res.send({ ok: false, code: HttpStatus.BAD_REQUEST, error: 'ไม่มีข้อมูลชื่อและนามสกุล' });
@@ -69,15 +69,15 @@ function isNull(value) {
   }
 }
 
-function messageName(code){
+function messageName(code) {
   let statusMessage = '';
   if (code == 200) {
     statusMessage = 'FOUND';
   } else if (code == 300) {
     statusMessage = 'NOT_FOUND';
-  } else if (code == 400  ) {
+  } else if (code == 400) {
     statusMessage = 'PERMISSION_DENINED';
-  } else if (code == 100  ) {
+  } else if (code == 100) {
     statusMessage = 'EMPTY_PARAMETER';
   }
   return statusMessage;
